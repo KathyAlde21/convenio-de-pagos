@@ -89,8 +89,9 @@
 **<h3>📷 Vista previa</h3>**
 
 <p>
-  <img src="./assets/img/vista_previa.png" alt="Vista previa del sitio control de tiempos para conversaciones" width="50%">
+  <img src="./assets/img/vista-previa.png" alt="Vista previa del sitio diseñado para calcular los montos en las cuotas de un convenio de pago" width="30%">
 </p>
+<p><img src="./assets/img/convenio.png"></p>
 
 **<h3>📚 Lo que practiqué en este proyecto</h3>**
 

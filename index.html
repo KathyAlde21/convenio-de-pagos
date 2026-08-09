@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente de Convenios</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="./assets/css/style.css">
+
+</head>
+<body>
+    <!-- ENCABEZADO -->
+    <header class="hero py-4 py-md-5">
+
+        <div class="container page-width text-center">
+
+            <p class="eyebrow mb-2">
+                Herramienta de cálculo referencial
+            </p>
+
+            <h1 class="display-6 fw-bold mb-3">
+                CONVENIOS DE PAGO
+            </h1>
+
+            <img src="./assets/img/icono-convenio-de-pago.png" alt="Ilustración de un convenio de pago"
+                class="hero-img img-fluid mb-3">
+
+            <p class="hero-text mx-auto mb-0">
+                Diseñado para uso personal y de compañeros de trabajo en Konecta.
+                Permite calcular rápidamente el pie y las cuotas referenciales antes
+                de gestionar un convenio, junto con una pauta de revisión de los datos
+                necesarios según las instrucciones vigentes.
+            </p>
+        </div>
+    </header>
+
+    <main class="container page-width pb-5">
+        <!-- ==================================================
+             PAUTA DE REVISIÓN
+        =================================================== -->
+
+        <section class="card app-card checklist-card mb-4">
+            <div class="card-body p-3 p-md-4">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
+                    <div>
+                        <p class="section-eyebrow mb-1">
+                            Antes de comenzar
+                        </p>
+                        <h2 class="h4 mb-0">
+                            Pauta de revisión
+                        </h2>
+                    </div>
+                    <span class="badge bg-secondary" id="checklistContador">
+                        0 de 5 revisados
+                    </span>
+                </div>
+                <p class="text-muted mb-4">
+                    Marca cada punto a medida que verificas los antecedentes
+                    necesarios para gestionar el convenio.
+                </p>
+                <div class="row g-3">
+
+                    <!-- BLOQUEO -->
+                    <div class="col-12 col-md-6">
+
+                        <div class="form-check checklist-item">
+
+                            <input class="form-check-input checklist-check" type="checkbox" id="checkBloqueo">
+
+                            <label class="form-check-label" for="checkBloqueo">
+
+                                Revisar si el suministro está bloqueado.
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CONVENIO VIGENTE -->
+                    <div class="col-12 col-md-6">
+
+                        <div class="form-check checklist-item">
+
+                            <input class="form-check-input checklist-check" type="checkbox" id="checkConvenio">
+
+                            <label class="form-check-label" for="checkConvenio">
+
+                                Verificar si existe un convenio vigente.
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CUOTAS -->
+                    <div class="col-12 col-md-6">
+
+                        <div class="form-check checklist-item">
+
+                            <input class="form-check-input checklist-check" type="checkbox" id="checkCuotas">
+
+                            <label class="form-check-label" for="checkCuotas">
+
+                                Revisar cuotas pendientes y valor de cuota.
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CADUCAR -->
+                    <div class="col-12 col-md-6">
+
+                        <div class="form-check checklist-item">
+
+                            <input class="form-check-input checklist-check" type="checkbox" id="checkCaducar">
+
+                            <label class="form-check-label" for="checkCaducar">
+
+                                Solicitar caducar el convenio si corresponde.
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DEUDA -->
+                    <div class="col-12 col-md-6">
+
+                        <div class="form-check checklist-item">
+
+                            <input class="form-check-input checklist-check" type="checkbox" id="checkDeuda">
+
+                            <label class="form-check-label" for="checkDeuda">
+
+                                Confirmar la deuda que se incorporará al convenio.
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="text-end mt-4">
+
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="btnLimpiarChecklist">
+
+                        Limpiar pauta
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==================================================
+             CALCULADORA
+        =================================================== -->
+
+        <section class="card app-card mb-4">
+
+            <div class="card-body p-3 p-md-4">
+
+                <div class="mb-4">
+
+                    <p class="section-eyebrow mb-1">
+                        Cálculo referencial
+                    </p>
+
+                    <h2 class="h4 mb-1">
+                        Calculadora de convenio
+                    </h2>
+
+                    <p class="text-muted mb-0">
+                        Ingresa los antecedentes para estimar el pie y ver
+                        todas las alternativas de cuotas.
+                    </p>
+
+                </div>
+
+
+                <!-- DEUDA A CONVENIR -->
+
+                <div class="form-group">
+
+                    <label for="deudaNueva">
+                        Deuda a convenir
+                    </label>
+
+                    <div class="money-input">
+
+                        <span>$</span>
+
+                        <input type="text" id="deudaNueva" inputmode="numeric" autocomplete="off"
+                            placeholder="Ej: 350.000">
+
+                    </div>
+
+                </div>
+
+
+                <!-- ¿EXISTE CONVENIO VIGENTE? -->
+
+                <div class="form-check form-switch convenio-switch mb-3">
+
+                    <input class="form-check-input" type="checkbox" role="switch" id="tieneConvenio"
+                        aria-controls="datosConvenioVigente" aria-expanded="false">
+
+                    <label class="form-check-label fw-semibold" for="tieneConvenio">
+
+                        ¿Existe un convenio vigente?
+
+                    </label>
+
+                </div>
+
+
+                <p class="form-text mt-0 mb-3">
+                    Si existe, se sumará su saldo pendiente a la deuda
+                    que se está evaluando.
+                </p>
+
+
+                <!-- DATOS DEL CONVENIO VIGENTE -->
+
+                <div id="datosConvenioVigente" class="previous-agreement d-none mb-4">
+
+                    <h3 class="h6 mb-3">
+                        Datos del convenio vigente
+                    </h3>
+
+
+                    <div class="row g-3">
+
+                        <!-- CUOTAS PENDIENTES -->
+
+                        <div class="col-12 col-md-6">
+
+                            <label for="cuotasPendientes" class="form-label">
+
+                                Cuotas pendientes
+
+                            </label>
+
+                            <input type="number" class="form-control" id="cuotasPendientes" min="1" max="48" step="1"
+                                placeholder="Ej: 36">
+
+                        </div>
+
+
+                        <!-- VALOR DE CUOTA -->
+
+                        <div class="col-12 col-md-6">
+
+                            <label for="valorCuotaVigente" class="form-label">
+
+                                Valor de cada cuota
+
+                            </label>
+
+
+                            <div class="money-input">
+
+                                <span>$</span>
+
+                                <input type="text" id="valorCuotaVigente" inputmode="numeric" autocomplete="off"
+                                    placeholder="Ej: 8.000">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MENSAJE DE ERROR -->
+
+                <div id="mensajeError" class="form-error hidden" role="alert">
+                </div>
+
+
+                <!-- BOTONES -->
+
+                <div class="actions">
+
+                    <button type="button" class="btn btn-primary" id="btnCalcular">
+
+                        Calcular convenio
+
+                    </button>
+
+
+                    <button type="button" class="btn btn-outline-secondary" id="btnLimpiarCalculadora">
+
+                        Limpiar calculadora
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==================================================
+             RESULTADOS
+        =================================================== -->
+
+        <section id="resultados" class="card app-card results-card hidden mb-4">
+
+            <div class="card-body p-3 p-md-4">
+
+                <div class="section-title">
+
+                    <span class="step">
+                        ✓
+                    </span>
+
+                    <div>
+
+                        <h2>
+                            Resultado referencial
+                        </h2>
+
+                        <p>
+                            Alternativas disponibles entre 3 y 12 cuotas.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RESUMEN -->
+
+                <div class="summary">
+
+                    <div class="summary-item">
+
+                        <span>
+                            Monto considerado
+                        </span>
+
+                        <strong id="resultadoTotal">
+                            $0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-item">
+
+                        <span>
+                            Pie 25 %
+                        </span>
+
+                        <strong id="resultadoPie">
+                            $0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-item">
+
+                        <span>
+                            Saldo a convenir
+                        </span>
+
+                        <strong id="resultadoSaldo">
+                            $0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CUOTAS -->
+
+                <h3 class="installment-title">
+                    Opciones de cuotas
+                </h3>
+
+
+                <div id="listaCuotas" class="installments">
+                </div>
+
+
+                <!-- AVISO -->
+
+                <div class="notice">
+
+                    <span class="notice-icon">
+                        ⓘ
+                    </span>
+
+                    <p>
+
+                        <strong>
+                            Valores referenciales.
+                        </strong>
+
+                        La distribución definitiva de las cuotas será
+                        determinada por el sistema al generar el convenio.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ==================================================
+         ALERTA
+    =================================================== -->
+
+    <dialog id="alerta">
+
+        <div class="dialog-content">
+
+            <div class="dialog-icon">
+                !
+            </div>
+
+            <h2 id="alertaTitulo">
+                Atención
+            </h2>
+
+            <p id="alertaMensaje">
+            </p>
+
+            <button id="cerrarAlerta" class="btn btn-primary" type="button">
+
+                Entendido
+
+            </button>
+
+        </div>
+
+    </dialog>
+
+
+    <!-- ==================================================
+         FOOTER
+    =================================================== -->
+
+    <footer class="footer bg-dark text-light">
+
+        <div class="container page-width py-3 text-center">
+
+            <p class="mb-0">
+                &copy; 2026 Kathy Alderete
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+    <script src="./assets/js/script.js"></script>
+
+</body>
+</html>

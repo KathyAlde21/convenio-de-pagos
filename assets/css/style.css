@@ -1,0 +1,698 @@
+:root {
+    --background: #f4f6f8;
+    --card: #ffffff;
+    --text: #17202a;
+    --muted: #667085;
+    --border: #dfe3e8;
+    --primary: #175cd3;
+    --primary-hover: #1849a9;
+    --success-bg: #ecfdf3;
+    --success-border: #abefc6;
+    --warning-bg: #fff8e5;
+    --warning-border: #fedf89;
+    --danger: #b42318;
+    --danger-bg: #fef3f2;
+    --radius: 18px;
+    --shadow:
+        0 8px 24px rgba(16, 24, 40, 0.06);
+}
+
+/* =====================================================
+   GENERAL
+===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: 
+        var(--background);
+    color:
+        var(--text);
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+/*
+    No modificamos .container porque pertenece
+    a Bootstrap.
+
+    Esta clase controla solamente el ancho
+    de nuestra aplicación.
+*/
+
+.page-width {
+    max-width: 900px;
+}
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero {
+    background: #ffffff;
+    border-bottom:
+        1px solid var(--border);
+}
+
+
+.eyebrow {
+    display: inline-block;
+    padding:
+        6px 12px;
+    border:
+        1px solid #b9cdf5;
+    border-radius:
+        999px;
+    background:
+        #f6f9ff;
+    color:
+        var(--primary);
+    font-size:
+        0.82rem;
+    font-weight:
+        700;
+    text-transform:
+        uppercase;
+    letter-spacing:
+        0.08em;
+}
+
+.hero h1 {
+    font-size:
+        clamp(2rem,
+            5vw,
+            3.2rem);
+    line-height:
+        1.05;
+}
+
+.hero-text {
+    max-width:
+        700px;
+    color:
+        var(--muted);
+    font-size:
+        1.02rem;
+    line-height:
+        1.6;
+}
+
+.hero-img {
+    width:
+        170px;
+    max-width:
+        45vw;
+    height:
+        auto;
+}
+
+/* =====================================================
+   TARJETAS
+===================================================== */
+
+.app-card {
+    border:
+        1px solid var(--border);
+    border-radius:
+        var(--radius);
+    box-shadow:
+        var(--shadow);
+}
+
+.section-title {
+    display:
+        flex;
+    align-items:
+        center;
+    gap:
+        14px;
+    margin-bottom:
+        24px;
+}
+
+.section-title h2 {
+    margin:
+        0 0 4px;
+    font-size:
+        1.25rem;
+}
+
+.section-title p {
+    margin:
+        0;
+    color:
+        var(--muted);
+    font-size:
+        0.94rem;
+}
+
+.step {
+    display:
+        grid;
+    place-items:
+        center;
+    flex:
+        0 0 38px;
+    width:
+        38px;
+    height:
+        38px;
+    border-radius:
+        50%;
+    background:
+        var(--primary);
+    color:
+        white;
+    font-weight:
+        700;
+}
+
+.section-eyebrow {
+    color:
+        var(--primary);
+    font-size:
+        0.8rem;
+    font-weight:
+        700;
+    text-transform:
+        uppercase;
+    letter-spacing:
+        0.08rem;
+}
+
+/* =====================================================
+   CHECKLIST
+===================================================== */
+
+.checklist-card {
+    overflow:
+        hidden;
+}
+
+.checklist-item {
+    height:
+        100%;
+    padding:
+        0.9rem 1rem 0.9rem 2.5rem;
+    border:
+        1px solid #dee2e6;
+    border-radius:
+        0.75rem;
+    transition:
+        0.2s ease;
+}
+
+.checklist-item:hover {
+    background-color:
+        #f8f9fa;
+}
+
+.checklist-item.completado {
+    background-color:
+        var(--success-bg);
+    border-color:
+        var(--success-border);
+}
+
+.checklist-item.completado .form-check-label {
+    text-decoration:
+        line-through;
+    opacity:
+        0.7;
+}
+
+.form-check-input,
+.form-check-label {
+    cursor:
+        pointer;
+}
+
+/* =====================================================
+   FORMULARIO
+===================================================== */
+
+.form-group {
+    margin-bottom:
+        24px;
+}
+
+.form-group label,
+.form-label {
+    margin-bottom:
+        8px;
+    font-weight:
+        650;
+}
+
+/* -------------------------
+   INPUT DE DINERO
+-------------------------- */
+
+.money-input {
+    display:
+        flex;
+    align-items:
+        center;
+    overflow:
+        hidden;
+    border:
+        1px solid #cfd4dc;
+    border-radius:
+        10px;
+    background:
+        white;
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+.money-input:focus-within {
+    border-color:
+        var(--primary);
+    box-shadow:
+        0 0 0 4px rgba(23,
+            92,
+            211,
+            0.12);
+}
+
+.money-input span {
+    padding-left:
+        14px;
+    color:
+        var(--muted);
+    font-weight:
+        700;
+}
+
+.money-input input {
+    width:
+        100%;
+    padding:
+        13px 14px 13px 8px;
+    border:
+        0;
+    outline:
+        none;
+    background:
+        transparent;
+}
+
+/* -------------------------
+   INPUT NORMAL
+-------------------------- */
+
+.form-control {
+    min-height:
+        48px;
+    border-radius:
+        10px;
+}
+
+
+.form-control:focus {
+    border-color:
+        var(--primary);
+    box-shadow:
+        0 0 0 4px rgba(23,
+            92,
+            211,
+            0.12);
+}
+
+/* -------------------------
+   SWITCH CONVENIO
+-------------------------- */
+
+.convenio-switch {
+    display:
+        flex;
+    align-items:
+        center;
+    gap:
+        8px;
+}
+
+.convenio-switch .form-check-input {
+    flex:
+        0 0 auto;
+    margin-top:
+        0;
+}
+
+/* -------------------------
+   CONVENIO VIGENTE
+-------------------------- */
+
+.previous-agreement {
+    padding:
+        20px;
+    background:
+        #f8fafc;
+    border:
+        1px solid var(--border);
+    border-radius:
+        14px;
+}
+
+/* =====================================================
+   BOTONES
+===================================================== */
+
+.actions {
+    display:
+        flex;
+    flex-wrap:
+        wrap;
+    gap:
+        12px;
+    margin-top:
+        20px;
+}
+
+.btn {
+    min-height:
+        46px;
+    padding:
+        10px 20px;
+    border-radius:
+        10px;
+    font-weight:
+        700;
+    transition:
+        transform 0.15s,
+        background-color 0.15s,
+        border-color 0.15s;
+}
+
+.btn:active {
+    transform:
+        scale(0.98);
+}
+
+.btn-primary {
+    background:
+        var(--primary);
+    border-color:
+        var(--primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background:
+        var(--primary-hover);
+    border-color:
+        var(--primary-hover);
+}
+
+/* =====================================================
+   ERRORES
+===================================================== */
+
+.form-error {
+    margin:
+        18px 0 0;
+    padding:
+        12px 14px;
+    border-radius:
+        10px;
+    background:
+        var(--danger-bg);
+    color:
+        var(--danger);
+    font-weight:
+        600;
+}
+
+/* =====================================================
+   RESULTADOS
+===================================================== */
+
+.results-card {
+    border-top:
+        4px solid var(--primary);
+}
+
+/* -------------------------
+   RESUMEN
+-------------------------- */
+
+.summary {
+    display:
+        grid;
+    grid-template-columns:
+        repeat(3,
+            1fr);
+    gap:
+        14px;
+    margin-bottom:
+        28px;
+}
+
+.summary-item {
+    padding:
+        18px;
+    background:
+        #f8fafc;
+    border-radius:
+        12px;
+}
+
+.summary-item span {
+    display:
+        block;
+    margin-bottom:
+        6px;
+    color:
+        var(--muted);
+    font-size:
+        0.9rem;
+}
+
+.summary-item strong {
+    font-size:
+        1.35rem;
+}
+
+/* -------------------------
+   CUOTAS
+-------------------------- */
+
+.installment-title {
+    margin:
+        0 0 14px;
+    font-size:
+        1rem;
+}
+
+.installments {
+    display:
+        grid;
+    grid-template-columns:
+        repeat(5,
+            minmax(0, 1fr));
+    gap:
+        12px;
+}
+
+.installment {
+    padding:
+        16px 10px;
+    border:
+        1px solid var(--border);
+    border-radius:
+        12px;
+    background:
+        white;
+    text-align:
+        center;
+}
+
+.installment span {
+    display:
+        block;
+    margin-bottom:
+        5px;
+    color:
+        var(--muted);
+    font-size:
+        0.85rem;
+}
+
+.installment strong {
+    font-size:
+        1.05rem;
+}
+
+/* -------------------------
+   AVISO
+-------------------------- */
+
+.notice {
+    display:
+        flex;
+    gap:
+        12px;
+    margin-top:
+        28px;
+    padding:
+        16px;
+    border:
+        1px solid var(--warning-border);
+    border-radius:
+        12px;
+    background:
+        var(--warning-bg);
+}
+
+.notice p {
+    margin:
+        0;
+    line-height:
+        1.5;
+}
+
+.notice-icon {
+    font-size:
+        1.2rem;
+}
+
+/* =====================================================
+   DIALOG
+===================================================== */
+
+dialog {
+    width:
+        min(440px,
+            calc(100% - 32px));
+    padding:
+        0;
+    border:
+        0;
+    border-radius:
+        18px;
+    box-shadow:
+        0 24px 60px rgba(0,
+            0,
+            0,
+            0.22);
+}
+
+dialog::backdrop {
+    background:
+        rgba(15,
+            23,
+            42,
+            0.62);
+}
+
+.dialog-content {
+    padding:
+        30px;
+    text-align:
+        center;
+}
+
+.dialog-icon {
+    display:
+        grid;
+    place-items:
+        center;
+    width:
+        52px;
+    height:
+        52px;
+    margin:
+        0 auto 16px;
+    border-radius:
+        50%;
+    background:
+        var(--danger-bg);
+    color:
+        var(--danger);
+    font-size:
+        1.6rem;
+    font-weight:
+        800;
+}
+
+.dialog-content h2 {
+    margin:
+        0 0 10px;
+}
+
+.dialog-content p {
+    margin:
+        0 0 22px;
+    color:
+        var(--muted);
+    line-height:
+        1.5;
+}
+
+/* =====================================================
+   UTILIDADES
+===================================================== */
+
+.hidden {
+    display:
+        none !important;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 767.98px) {
+
+    .summary {
+        grid-template-columns:
+            1fr;
+    }
+
+    /*
+        En celular mostramos 2 cuotas por fila.
+    */
+
+    .installments {
+        grid-template-columns:
+            repeat(2,
+                minmax(0, 1fr));
+    }
+
+    .actions {
+        flex-direction:
+            column;
+    }
+
+    .actions .btn {
+        width:
+            100%;
+    }
+}
+
+/*
+    TABLET
+*/
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+    .installments {
+        grid-template-columns:
+            repeat(3,
+                minmax(0, 1fr));
+    }
+}

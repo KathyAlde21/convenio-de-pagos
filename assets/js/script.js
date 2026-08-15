@@ -1,6 +1,6 @@
 /* =====================================================
    CONFIGURACIÓN
-   Si cambian las reglas, modificar principalmente aquí.
+   Si cambian las reglas, modificar principalmente aquí
 ===================================================== */
 
 const CONFIG = {
@@ -15,6 +15,20 @@ const CONFIG = {
 
   apiUF: "https://mindicador.cl/api/uf",
 };
+
+const PLANTILLA_DATOS_CLIENTE = `DATOS CONVENIO:
+NOMBRE:
+RUT:
+N° SERIE:
+FECHA NAC:
+TELEFONO:
+CORREO:
+N° DE CLIENTE:
+DIRECCIÓN:
+DEUDA:
+25% PIE:
+00 CUOTAS DE:
+OBS: si hay convenio anterior mencionar acá que se debe caducar`;
 
 /* =====================================================
    ELEMENTOS DEL DOM
@@ -60,6 +74,20 @@ const alertaMensaje = document.querySelector("#alertaMensaje");
 
 const cerrarAlerta = document.querySelector("#cerrarAlerta");
 
+const btnCopiarPlantilla = document.querySelector("#btnCopiarPlantilla");
+
+const textoPlantilla = document.querySelector("#textoPlantilla");
+
+const estadoCopiaPlantilla = document.querySelector("#estadoCopiaPlantilla");
+
+const btnCopiarResumenMontos = document.querySelector(
+  "#btnCopiarResumenMontos",
+);
+
+const textoResumenMontos = document.querySelector("#textoResumenMontos");
+
+const estadoCopiaResumen = document.querySelector("#estadoCopiaResumen");
+
 /* =====================================================
    ESTADO
 ===================================================== */
@@ -77,11 +105,12 @@ function iniciarAplicacion() {
 
   actualizarChecklist();
 
+  textoPlantilla.textContent = PLANTILLA_DATOS_CLIENTE;
+
   /*
     La UF se carga en segundo plano.
     No forma parte del cálculo que ve el usuario.
-    Solo se utilizará para validar el límite
-    máximo permitido.
+    Solo se utiliza para validar el límite máximo.
   */
 
   cargarUF();
@@ -125,6 +154,14 @@ function configurarEventos() {
   cerrarAlerta.addEventListener("click", () => {
     alerta.close();
   });
+
+  /* PLANTILLA PARA DATOS CLIENTE */
+
+  btnCopiarPlantilla.addEventListener("click", copiarPlantillaTxt);
+
+  /* RESUMEN DE MONTOS */
+
+  btnCopiarResumenMontos.addEventListener("click", copiarResumenMontos);
 }
 
 /* =====================================================
@@ -174,14 +211,9 @@ function actualizarConvenioVigente() {
 
   tieneConvenio.setAttribute("aria-expanded", String(activo));
 
-  /*
-    Si se desactiva el convenio vigente,
-    eliminamos sus datos para que no queden
-    valores anteriores escondidos.
-  */
-
   if (!activo) {
     cuotasPendientes.value = "";
+
     valorCuotaVigente.value = "";
   }
 }
@@ -195,6 +227,7 @@ function formatearInputPesos(input) {
 
   if (soloNumeros === "") {
     input.value = "";
+
     return;
   }
 
@@ -226,7 +259,11 @@ function formatearPesos(valor) {
 }
 
 /* =====================================================
-   UF => La UF se utiliza solo para validar el límite máximo de 100 UF.
+   UF
+
+   La UF se utiliza solo para validar
+   el límite máximo de 100 UF.
+
    La calculadora trabaja en pesos.
 ===================================================== */
 
@@ -252,13 +289,6 @@ async function cargarUF() {
       return obtenerFechaChile(registro.fecha) === hoyChile;
     });
 
-    /*
-      Si la API todavía no trae el registro
-      correspondiente al día actual,
-      usamos el último valor disponible.
-      Sigue siendo una validación referencial.
-    */
-
     const registroDisponible = registroHoy ?? datos.serie[0];
 
     valorUF = Number(registroDisponible.valor);
@@ -282,10 +312,57 @@ function obtenerFechaChile(fecha = new Date()) {
 
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: "America/Santiago",
+
     year: "numeric",
+
     month: "2-digit",
+
     day: "2-digit",
   }).format(objetoFecha);
+}
+
+/* =====================================================
+   COPIAR PLANTILLA PARA INGRESAR DATOS CLIENTES
+===================================================== */
+
+async function copiarPlantillaTxt() {
+  const texto = PLANTILLA_DATOS_CLIENTE;
+
+  try {
+    await navigator.clipboard.writeText(texto);
+
+    mostrarConfirmacionCopia();
+  } catch (error) {
+    const textarea = document.createElement("textarea");
+
+    textarea.value = texto;
+
+    textarea.style.position = "fixed";
+
+    textarea.style.opacity = "0";
+
+    document.body.appendChild(textarea);
+
+    textarea.select();
+
+    document.execCommand("copy");
+
+    textarea.remove();
+
+    mostrarConfirmacionCopia();
+  }
+}
+
+/* =====================================================
+   CONFIRMACIÓN DE COPIA PARA INGRESAR DATOS CLIENTES
+===================================================== */
+
+function mostrarConfirmacionCopia() {
+  estadoCopiaPlantilla.classList.remove("d-none");
+
+  setTimeout(() => {
+    estadoCopiaPlantilla.classList.add("d-none");
+  }, 2000);
 }
 
 /* =====================================================
@@ -294,6 +371,7 @@ function obtenerFechaChile(fecha = new Date()) {
 
 async function calcularConvenio() {
   limpiarError();
+
   ocultarResultados();
 
   /* =========================================
@@ -345,17 +423,15 @@ async function calcularConvenio() {
       return;
     }
 
-    /* SALDO PENDIENTE DEL CONVENIO */
+    /*
+      Saldo pendiente del convenio vigente.
+    */
 
     saldoConvenioAnterior = cuotas * valorCuota;
   }
 
   /* =========================================
-     3. MONTO TOTAL ACUMULADO
-
-     IMPORTANTE:
-     primero sumamos todo y DESPUÉS
-     validamos las 100 UF.
+     3. MONTO CONSOLIDADO
   ========================================= */
 
   const montoTotal = deuda + saldoConvenioAnterior;
@@ -371,6 +447,7 @@ async function calcularConvenio() {
   if (!valorUF) {
     mostrarAlerta(
       "No se puede validar el límite",
+
       "No fue posible obtener el valor de la UF. No se pueden calcular alternativas hasta validar el límite permitido.",
     );
 
@@ -386,16 +463,15 @@ async function calcularConvenio() {
   if (montoTotal > limitePesos) {
     mostrarAlerta(
       "Monto fuera del límite",
+
       "La deuda a convenir supera el límite permitido de 100 UF. Cliente debe dirigirse a una sucursal.",
     );
 
     return;
   }
-  /* =========================================
-     6. RECIÉN AHORA CALCULAMOS
 
-     Si llegamos aquí significa que el
-     monto TOTAL pasó la validación.
+  /* =========================================
+     6. CÁLCULO
   ========================================= */
 
   const pie = montoTotal * CONFIG.pie;
@@ -403,19 +479,25 @@ async function calcularConvenio() {
   const saldo = montoTotal - pie;
 
   mostrarResultados({
+    deuda,
+    saldoConvenioAnterior,
     montoTotal,
     pie,
     saldo,
   });
 }
 
-/* 
-
-=====================================================
+/* =====================================================
    MOSTRAR RESULTADOS
 ===================================================== */
 
-function mostrarResultados({ montoTotal, pie, saldo }) {
+function mostrarResultados({
+  deuda,
+  saldoConvenioAnterior,
+  montoTotal,
+  pie,
+  saldo,
+}) {
   resultadoTotal.textContent = formatearPesos(montoTotal);
 
   resultadoPie.textContent = formatearPesos(pie);
@@ -423,14 +505,22 @@ function mostrarResultados({ montoTotal, pie, saldo }) {
   resultadoSaldo.textContent = formatearPesos(saldo);
 
   /*
-    Eliminamos las tarjetas de un cálculo anterior.
+    Eliminamos las tarjetas
+    de un cálculo anterior.
   */
 
   listaCuotas.innerHTML = "";
 
   /*
-    Generamos automáticamente todas las
-    alternativas entre 3 y 12 cuotas.
+    Guardamos también las cuotas
+    para construir el resumen de texto.
+  */
+
+  const lineasCuotas = [];
+
+  /*
+    Generamos automáticamente
+    las alternativas entre 3 y 12 cuotas.
   */
 
   for (
@@ -448,24 +538,104 @@ function mostrarResultados({ montoTotal, pie, saldo }) {
       <span>
         ${cuotas} cuotas
       </span>
+
       <strong>
         ${formatearPesos(valorCuota)}
       </strong>
     `;
 
     listaCuotas.appendChild(tarjeta);
+
+    /*
+      Agregamos la misma opción
+      al resumen para copiar.
+    */
+
+    lineasCuotas.push(`- ${cuotas} cuotas de ${formatearPesos(valorCuota)}`);
   }
+
+  /*
+    Si no existe convenio anterior,
+    mostramos "No aplica".
+  */
+
+  const convenioResumen =
+    saldoConvenioAnterior > 0
+      ? formatearPesos(saldoConvenioAnterior)
+      : "No aplica";
+
+  /*
+    Construimos el resumen completo.
+  */
+
+  const resumen = `Deuda: ${formatearPesos(deuda)}
+Saldo convenio vigente: ${convenioResumen}
+Saldo consolidado: ${formatearPesos(montoTotal)}
+25% Pie: ${formatearPesos(pie)}
+Cuotas:
+${lineasCuotas.join("\n")}`;
+
+  textoResumenMontos.textContent = resumen;
+
   resultados.classList.remove("hidden");
 
   /*
-    Bajamos automáticamente hasta
-    los resultados para no perder tiempo.
+    Bajamos automáticamente
+    hasta los resultados.
   */
 
   resultados.scrollIntoView({
     behavior: "smooth",
     block: "start",
   });
+}
+
+/* =====================================================
+   COPIAR RESUMEN DE MONTOS
+===================================================== */
+
+async function copiarResumenMontos() {
+  const texto = textoResumenMontos.textContent.trim();
+
+  if (!texto) {
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(texto);
+
+    mostrarConfirmacionResumen();
+  } catch (error) {
+    const textarea = document.createElement("textarea");
+
+    textarea.value = texto;
+
+    textarea.style.position = "fixed";
+
+    textarea.style.opacity = "0";
+
+    document.body.appendChild(textarea);
+
+    textarea.select();
+
+    document.execCommand("copy");
+
+    textarea.remove();
+
+    mostrarConfirmacionResumen();
+  }
+}
+
+/* =====================================================
+   CONFIRMACIÓN DE COPIA DEL RESUMEN DE MONTOS
+===================================================== */
+
+function mostrarConfirmacionResumen() {
+  estadoCopiaResumen.classList.remove("d-none");
+
+  setTimeout(() => {
+    estadoCopiaResumen.classList.add("d-none");
+  }, 2000);
 }
 
 /* =====================================================
@@ -490,6 +660,10 @@ function limpiarCalculadora() {
   ocultarResultados();
 
   listaCuotas.innerHTML = "";
+
+  textoResumenMontos.textContent = "";
+
+  estadoCopiaResumen.classList.add("d-none");
 
   deudaNueva.focus();
 }

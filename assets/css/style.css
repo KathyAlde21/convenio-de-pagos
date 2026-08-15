@@ -242,6 +242,68 @@ input {
 }
 
 /* =====================================================
+   PLANTILLA TXT
+===================================================== */
+
+.plantilla-card {
+    border-left:
+        4px solid var(--primary);
+}
+
+
+.plantilla-contenido {
+    padding:
+        18px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        12px;
+
+    background:
+        #f8fafc;
+}
+
+
+.plantilla-contenido pre {
+    margin:
+        0;
+
+    color:
+        var(--text);
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size:
+        0.94rem;
+
+    line-height:
+        1.7;
+
+    white-space:
+        pre-wrap;
+
+    word-break:
+        break-word;
+}
+
+
+.mensaje-copiado {
+    color:
+        #067647;
+
+    font-size:
+        0.9rem;
+
+    font-weight:
+        700;
+}
+
+/* =====================================================
    FORMULARIO
 ===================================================== */
 
